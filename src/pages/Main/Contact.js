@@ -4,12 +4,11 @@ import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link , useNavigate  } from 'react-router-dom';
-import MyGrid from './MyGrid';
 import { BrowserRouter, Routes , Route } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 
-function BlogPost() {
+function Contact() {
    const [hello, setHello] = useState('변경 전')
    const [id, setId] = useState("아이디를 입력해주세요");
    const [pw, setPw] = useState("패스워드를 입력해주세요");
@@ -48,6 +47,7 @@ function BlogPost() {
         navigate('/home');  
     }
 
+    
     return (
         <div className="d-flex flex-column">
           <main className="flex-shrink-0">
@@ -90,78 +90,59 @@ function BlogPost() {
     
             {/* Page Content */}
             <section className="py-5">
-              <div className="container px-5 my-5">
-                <div className="row gx-5">
-                  <div className="col-lg-3">
-                    <div className="d-flex align-items-center mt-lg-5 mb-4">
-                      <img className="img-fluid rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." />
-                      <div className="ms-3">
-                        <div className="fw-bold">Valerie Luna</div>
-                        <div className="text-muted">News, Business</div>
-                      </div>
-                    </div>
+              <div className="container px-5">
+                <div className="bg-light rounded-3 py-5 px-4 px-md-5 mb-5">
+                  <div className="text-center mb-5">
+                    <div className="feature bg-primary bg-gradient text-white rounded-3 mb-3"><i className="bi bi-envelope"></i></div>
+                    <h1 className="fw-bolder">Get in touch</h1>
+                    <p className="lead fw-normal text-muted mb-0">We'd love to hear from you</p>
                   </div>
-                  <div className="col-lg-9">
-                    {/* Post content */}
-                    <article>
-                      <header className="mb-4">
-                        <h1 className="fw-bolder mb-1">Welcome to Blog Post!</h1>
-                        <div className="text-muted fst-italic mb-2">January 1, 2023</div>
-                        <a className="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                        <a className="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
-                      </header>
-                      <figure className="mb-4"><img className="img-fluid rounded" src="https://dummyimage.com/900x400/ced4da/6c757d.jpg" alt="..." /></figure>
-                      <section className="mb-5">
-                        <p className="fs-5 mb-4">Science is an enterprise that should be cherished as an activity of the free human mind...</p>
-                        <h2 className="fw-bolder mb-4 mt-5">I have odd cosmic thoughts every day</h2>
-                        <p className="fs-5 mb-4">For me, the most fascinating interface is Twitter. I have odd cosmic thoughts every day and I realized I could hold them to myself or share them...</p>
-                      </section>
-                    </article>
-                    {/* Comments section */}
-                    <section>
-                      <div className="card bg-light">
-                        <div className="card-body">
-                          <form className="mb-4"><textarea className="form-control" rows="3" placeholder="Join the discussion and leave a comment!"></textarea></form>
-                          <div className="d-flex mb-4">
-                            <div className="flex-shrink-0"><img className="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div className="ms-3">
-                              <div className="fw-bold">Commenter Name</div>
-                              If you're going to lead a space frontier, it has to be government...
-                            </div>
-                          </div>
-                          <div className="d-flex mb-4">
-                            <div className="flex-shrink-0"><img className="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div>
-                            <div className="ms-3">
-                              <div className="fw-bold">Commenter Name</div>
-                              When you put money directly to a problem, it makes a good headline.
-                            </div>
-                          </div>
+                  <div className="row gx-5 justify-content-center">
+                    <div className="col-lg-8 col-xl-6">
+                      {/* Contact form */}
+                      <form id="contactForm">
+                        <div className="form-floating mb-3">
+                          <input className="form-control" id="name" type="text" placeholder="Enter your name..." />
+                          <label htmlFor="name">Full name</label>
                         </div>
-                      </div>
-                    </section>
+                        <div className="form-floating mb-3">
+                          <input className="form-control" id="email" type="email" placeholder="name@example.com" />
+                          <label htmlFor="email">Email address</label>
+                        </div>
+                        <div className="form-floating mb-3">
+                          <input className="form-control" id="phone" type="tel" placeholder="(123) 456-7890" />
+                          <label htmlFor="phone">Phone number</label>
+                        </div>
+                        <div className="form-floating mb-3">
+                          <textarea className="form-control" id="message" type="text" placeholder="Enter your message here..." style={{ height: '10rem' }}></textarea>
+                          <label htmlFor="message">Message</label>
+                        </div>
+                        <div className="d-grid"><button className="btn btn-primary btn-lg" id="submitButton" type="submit">Submit</button></div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
             </section>
+          </main>
     
-            {/* Footer */}
-            <footer className="bg-dark py-4 mt-auto">
-              <div className="container px-5">
-                <div className="row align-items-center justify-content-between flex-column flex-sm-row">
-                  <div className="col-auto"><div className="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
-                  <div className="col-auto">
-                    <a className="link-light small" href="#!">Privacy</a>
-                    <span className="text-white mx-1">&middot;</span>
-                    <a className="link-light small" href="#!">Terms</a>
-                    <span className="text-white mx-1">&middot;</span>
-                    <a className="link-light small" href="#!">Contact</a>
-                  </div>
+          {/* Footer */}
+          <footer className="bg-dark py-4 mt-auto">
+            <div className="container px-5">
+              <div className="row align-items-center justify-content-between flex-column flex-sm-row">
+                <div className="col-auto"><div className="small m-0 text-white">Copyright &copy; Your Website 2023</div></div>
+                <div className="col-auto">
+                  <a className="link-light small" href="#!">Privacy</a>
+                  <span className="text-white mx-1">&middot;</span>
+                  <a className="link-light small" href="#!">Terms</a>
+                  <span className="text-white mx-1">&middot;</span>
+                  <a className="link-light small" href="#!">Contact</a>
                 </div>
               </div>
-            </footer>
-          </main>
+            </div>
+          </footer>
         </div>
       );
 }
 
-export default BlogPost;
+export default Contact;

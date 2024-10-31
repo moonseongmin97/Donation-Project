@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from 'react-router-dom';
-import '../main/_static/css/main.css';
+import '../../main/_static/css/main.css';
 
 function Home() {
 
@@ -31,7 +31,7 @@ return (
                   <h1 className="display-5 fw-bolder text-white mb-2">메인 문구 생각해보자</h1>
                   <p className="lead fw-normal text-white-50 mb-4">사이드 문구</p>
                   <div className="d-grid gap-3 d-sm-flex justify-content-sm-center justify-content-xl-start">
-                    <a className="btn btn-primary btn-lg px-4 me-sm-3" href="#features">여긴 버튼 1</a>
+                    <a className="btn btn-primary btn-lg px-4 me-sm-3" ><Link className="nav-link" to="/about">여기버튼 1</Link></a>
                     <a className="btn btn-outline-light btn-lg px-4" href="#!">여긴 버튼 2</a>
                   </div>
                 </div>
