@@ -5,9 +5,10 @@
 1. 비쥬얼 스튜디오 설치
 2. 깃 설치 
 3. 노드 설치
-4. 깃 허브 연결 
-5. 비쥬얼 스튜디오에서 npm install ? 
-6. npm run start  >
+4. 깃 허브 연결
+5. 깃배시 입력 해야 커밋푸시 가능->git config --global user.name "moonseongmin97" && git config --global user.email "wja04097@naver.com"
+6. 비쥬얼 스튜디오에서 npm install ? 
+7. npm run start  >
 
 
 백엔드 연결 순서
