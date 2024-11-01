@@ -5,6 +5,8 @@ import axios from 'axios';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link , useNavigate  } from 'react-router-dom';
 import { BrowserRouter, Routes , Route } from 'react-router-dom';
+import NavbarComponent from '../Common/NavbarComponent';
+import FooterComponent from '../Common/FooterComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 

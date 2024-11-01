@@ -1,13 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
-import { BsArrowLeft } from 'react-icons/bs';
+import React, { useState, useRef } from 'react';
+import { Container, Row, Col, Navbar, Nav, Button } from 'react-bootstrap';
+import YouTubePlayer from './youtubePlayer';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function PortfolioOverview() {
-    const videoRefs = useRef({});  // 각 비디오에 대한 useRef 저장용
-    const [activeVideo, setActiveVideo] = useState(null);
-    const [apiReady, setApiReady] = useState(false);
-    const [errorVideo, setErrorVideo] = useState({});
+    const [activeVideo, setActiveVideo] = useState(null); // 현재 활성화된 비디오 ID
+    const playerPool = useRef({}); // YouTubePlayer 인스턴스를 재활용하기 위한 풀
 
     const videoLinks = [
         { title: "예시 영상 1", videoId: "ScMzIvxBSi4", thumbnail: "https://img.youtube.com/vi/ScMzIvxBSi4/hqdefault.jpg" },
@@ -16,75 +14,37 @@ function PortfolioOverview() {
         { title: "예시 영상 4", videoId: "dQw4w9WgXcQ", thumbnail: "https://img.youtube.com/vi/dQw4w9WgXcQ/hqdefault.jpg" }
     ];
 
-    useEffect(() => {
-        if (!window.YT) {
-            const tag = document.createElement('script');
-            tag.src = "https://www.youtube.com/iframe_api";
-            tag.onload = () => setApiReady(true);
-            document.body.appendChild(tag);
-        } else {
-            setApiReady(true);
-        }
-
-        window.onYouTubeIframeAPIReady = () => {
-            videoLinks.forEach((video) => {
-                const element = document.getElementById(video.videoId);
-                if (element && !videoRefs.current[video.videoId]) {
-                    videoRefs.current[video.videoId] = new window.YT.Player(video.videoId, {
-                        videoId: video.videoId,
-                        playerVars: {
-                            controls: 1,
-                            rel: 0,
-                            modestbranding: 1
-                        },
-                        events: {
-                            onError: () => {
-                                setErrorVideo((prev) => ({ ...prev, [video.videoId]: true }));
-                            }
-                        }
-                    });
-                }
-            });
-        };
-    }, [apiReady]);
-
     const handleMouseEnter = (videoId) => {
-        setActiveVideo(videoId);
-        const player = videoRefs.current[videoId];
-        if (apiReady && player && typeof player.playVideo === 'function') {
-            player.playVideo();
-        } else {
-            setErrorVideo((prev) => ({ ...prev, [videoId]: true }));
-        }
+        setActiveVideo(videoId); // 마우스를 올린 비디오 ID를 활성화
     };
 
-    const handleMouseLeave = (videoId) => {
-        const player = videoRefs.current[videoId];
-        if (player && typeof player.pauseVideo === 'function') {
-            player.pauseVideo();
-        }
+    const handleMouseLeave = () => {
+        setActiveVideo(null); // 마우스를 떼면 활성화 해제
+    };
+
+    const handlePlayerReady = (videoId, playerInstance) => {
+        playerPool.current[videoId] = playerInstance; // 플레이어를 풀에 저장하여 재활용 가능하도록
     };
 
     return (
         <div className="d-flex flex-column h-100">
-            <main className="flex-shrink-0">
-                <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-                    <div className="container px-5">
-                        <a className="navbar-brand" href="/">문성민의 사이트</a>
-                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                                <li className="nav-item"><a className="nav-link" href="/">홈</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/about">소개</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/contact">문의</a></li>
-                                <li className="nav-item"><a className="nav-link" href="/pricing">가격</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </nav>
+            {/* 네비게이션 바 */}
+            <Navbar bg="dark" variant="dark" expand="lg" className="mb-5">
+                <Container>
+                    <Navbar.Brand href="/">문성민의 사이트</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="ms-auto">
+                            <Nav.Link href="/">홈</Nav.Link>
+                            <Nav.Link href="/about">소개</Nav.Link>
+                            <Nav.Link href="/contact">문의</Nav.Link>
+                            <Nav.Link href="/pricing">가격</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
 
+            <main className="flex-shrink-0">
                 <section className="py-5">
                     <Container className="px-5 my-5">
                         <div className="text-center mb-5">
@@ -96,11 +56,18 @@ function PortfolioOverview() {
                                 <Col lg={6} key={index}>
                                     <div
                                         className="position-relative mb-5"
-                                        style={{ width: "100%", height: "300px" }}
+                                        style={{ width: "100%", height: "300px", cursor: "pointer" }}
                                         onMouseEnter={() => handleMouseEnter(video.videoId)}
-                                        onMouseLeave={() => handleMouseLeave(video.videoId)}
+                                        onMouseLeave={handleMouseLeave}
                                     >
-                                        {(activeVideo !== video.videoId || errorVideo[video.videoId]) && (
+                                        <YouTubePlayer
+                                            videoId={video.videoId}
+                                            thumbnail={video.thumbnail}
+                                            title={video.title}
+                                            isActive={activeVideo === video.videoId}
+                                            onReady={handlePlayerReady}
+                                        />
+                                        {activeVideo !== video.videoId && (
                                             <div
                                                 style={{
                                                     position: 'absolute',
@@ -114,33 +81,27 @@ function PortfolioOverview() {
                                                 }}
                                             ></div>
                                         )}
-                                        <div id={video.videoId} style={{ width: '100%', height: '100%' }}></div>
-                                        <h3 className="h3 fw-bolder mt-2 text-center">{video.title}</h3>
                                     </div>
                                 </Col>
                             ))}
                         </Row>
                     </Container>
                 </section>
-
-                <section className="py-5 bg-light">
-                    <Container className="px-5 my-5">
-                        <h2 className="display-4 fw-bolder mb-4">함께 멋진 작업을 만들어보세요</h2>
-                        <Button href="#!" className="btn btn-lg btn-primary">문의하기</Button>
-                    </Container>
-                </section>
             </main>
 
+            {/* 푸터 */}
             <footer className="bg-dark py-4 mt-auto">
                 <Container>
                     <Row className="align-items-center justify-content-between flex-column flex-sm-row">
-                        <Col className="col-auto"><div className="small m-0 text-white">Copyright &copy; Your Website 2023</div></Col>
                         <Col className="col-auto">
-                            <a className="link-light small" href="#!">개인정보 처리방침</a>
-                            <span className="text-white mx-1">&middot;</span>
-                            <a className="link-light small" href="#!">이용 약관</a>
-                            <span className="text-white mx-1">&middot;</span>
-                            <a className="link-light small" href="#!">연락처</a>
+                            <div className="small m-0 text-white">Copyright &copy; Your Website 2023</div>
+                        </Col>
+                        <Col className="col-auto">
+                            <Nav className="justify-content-end">
+                                <Nav.Link href="#!" className="link-light small">개인정보 처리방침</Nav.Link>
+                                <Nav.Link href="#!" className="link-light small">이용 약관</Nav.Link>
+                                <Nav.Link href="#!" className="link-light small">연락처</Nav.Link>
+                            </Nav>
                         </Col>
                     </Row>
                 </Container>

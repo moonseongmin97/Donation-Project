@@ -3,6 +3,8 @@
 import LogIn from "./pages/Login/Login";
 import Join from "./pages/Login/Join";
 import Signup from "./pages/Login/Signup";
+import LoginPage from "./pages/Login/LoginPage";
+
 
 import Welcome from "./pages/Main/Home";
 import Home from "./pages/Main/Home";
@@ -18,6 +20,9 @@ import PortfolioItem from "./SamplePage/PortfolioItem";
 import PortfolioOverview from "./SamplePage/PortfolioOverview";
 import Pricing from "./SamplePage/Pricing";
 
+import ShortsContainer from "./pages/Main/ShortsContainer";
+import NavbarComponent from './pages/Common/NavbarComponent';
+import FooterComponent from './pages/Common/FooterComponent';
 
 import Test from "./SamplePage/react-page";
 import CampaignList from "./CampaignList";
@@ -27,12 +32,15 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 function App() {
     return (
       <BrowserRouter>
+        {/* 공통 네비게이터  */}
+        <NavbarComponent/>  
+
         <Routes>
           {/* 로그인 관련 */}          
           {/* <LogIn /> */}
           <Route path="/logIn" element={<LogIn />} />                   
           <Route path="/join" element={<Join />} />  
-
+          <Route path="/LoginPage" element={<LoginPage />} />  
           <Route path="/Signup" element={<Signup />} />     {/* 회원가입*/}  
           {/* 전시 화면 관련 */}  
           {/* < /> */}
@@ -44,21 +52,26 @@ function App() {
           <Route path="/BlogHome" element={<BlogHome />} />  
           <Route path="/BlogPost" element={<BlogPost />} />  
           <Route path="/PortfolioOverview2" element={<PortfolioOverview2 />} />    {/* 이건 유튜브나 올릴거 */}  
+          <Route path="/Pricing" element={<Pricing />} />     {/* 이건 나중에 후원버튼으로 쓰면 될듯 */}  
+
 
 
           <Route path="/Contact" element={<Contact />} />  {/* 로그인 창 흡사 */}  
           <Route path="/Faq" element={<Faq />} /> {/* 설명, 질문 창 */}  
           <Route path="/PortfolioItem" element={<PortfolioItem />} />   {/* 사진 창 */} 
           <Route path="/PortfolioOverview" element={<PortfolioOverview />} />    {/* 이건 유튜브나 올릴거 */}  
-          <Route path="/Pricing" element={<Pricing />} />     {/* 이건 나중에 후원버튼으로 쓰면 될듯 */}  
+          <Route path="/ShortsContainer" element={<ShortsContainer />} />     {/* 이건 나중에 후원버튼으로 쓰면 될듯 */}  
 
 
-          Signup
+    
 
 
           {/* <TestUrl /> */}
           <Route path="/Test" element={<Test />} /> 
+        
         </Routes>
+        {/* 공통 푸터 footer  */}
+        <FooterComponent/> 
       </BrowserRouter> 
     );
   }

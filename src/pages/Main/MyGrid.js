@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import NavbarComponent from '../Common/NavbarComponent';
+import FooterComponent from '../Common/FooterComponent';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const MyGrid = () => {

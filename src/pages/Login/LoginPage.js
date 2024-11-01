@@ -1,36 +1,49 @@
-// src/main/frontend/src/App.js
-
 import React, { useState } from 'react';
-import axios from 'axios';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import ApiCall from '../Common/ApiCall';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-function Login() {
+function LoginPage() {
     const [hello, setHello] = useState('변경 전');
     const [id, setId] = useState("");
     const [pw, setPw] = useState("");
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleLogin = async (event) => {
+    const handleSuccess = (data) => {
+        setHello(data.message || "로그인 성공");
+        setId(data[0].username);
+        console.log(data);
+    };
+
+    const handleError = (error) => {
+        console.error("로그인 중 오류 발생:", error);
+        setHello("로그인 실패");
+    };
+
+    const handleSubmit = async (event) => {
+        console.log("handleSubmit 실행");
         event.preventDefault();
-        try {
-            const response = await axios.post('/api/login', { id, pw });
-            setHello(response.data.message || "로그인 성공");
-        } catch (error) {
-            console.error("로그인 중 오류 발생:", error);
-        }
+        setLoading(true);
+
+        const { data, error } = await ApiCall({
+            url: '/api/members',
+            method: 'get',
+            onSuccess: handleSuccess,
+            onError: handleError
+        });
+
+        setLoading(false);
     };
 
     const goToSignup = () => {
-        navigate('/Signup'); // 회원가입 페이지로 이동
+        navigate('/Signup');
     };
 
     return (
         <div className="d-flex flex-column min-vh-100">
             <main className="flex-shrink-0">
-
-
                 {/* 로그인 폼 */}
                 <section className="py-5">
                     <Container className="px-5">
@@ -41,7 +54,7 @@ function Login() {
                             </div>
                             <Row className="justify-content-center">
                                 <Col lg={8} xl={6}>
-                                    <Form onSubmit={handleLogin}>
+                                    <Form onSubmit={handleSubmit}>
                                         <Form.Group controlId="formId" className="mb-3">
                                             <Form.Label>아이디</Form.Label>
                                             <Form.Control
@@ -60,9 +73,14 @@ function Login() {
                                                 onChange={(e) => setPw(e.target.value)}
                                             />
                                         </Form.Group>
-                                        <Button type="submit" variant="primary" className="w-100 mb-2">로그인</Button>
-                                        
-                                        {/* 회원가입 버튼 */}
+                                        <Button 
+                                            type="submit" 
+                                            variant="primary" 
+                                            className="w-100 mb-2" 
+                                            disabled={loading}
+                                        >
+                                            {loading ? '로그인 중...' : '로그인'}
+                                        </Button>
                                         <Button variant="outline-secondary" className="w-100" onClick={goToSignup}>회원가입</Button>
                                     </Form>
                                     {hello && <p className="text-center mt-3">{hello}</p>}
@@ -76,4 +94,4 @@ function Login() {
     );
 }
 
-export default Login;
+export default LoginPage;

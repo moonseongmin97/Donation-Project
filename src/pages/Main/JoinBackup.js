@@ -2,6 +2,8 @@
 
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
+import NavbarComponent from '../Common/NavbarComponent';
+import FooterComponent from '../Common/FooterComponent';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link , useNavigate  } from 'react-router-dom';
 import { BrowserRouter, Routes , Route } from 'react-router-dom';
@@ -52,32 +54,7 @@ function Join2() {
         <div className="d-flex flex-column">
           <main className="flex-shrink-0">
             {/* Navigation */}
-            <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-              <div className="container px-5">
-                <a className="navbar-brand" href="/">Start Bootstrap</a>
-                <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                  <ul className="navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li className="nav-item"><a className="nav-link" href="/">Home</a></li>
-                    <li className="nav-item"><a className="nav-link" href="/about">About</a></li>
-                    <li className="nav-item"><a className="nav-link" href="/contact">Contact</a></li>
-                    <li className="nav-item"><a className="nav-link" href="/pricing">Pricing</a></li>
-                    <li className="nav-item"><a className="nav-link" href="/faq">FAQ</a></li>
-                    <li className="nav-item dropdown">
-                      <a className="nav-link dropdown-toggle" href="#" id="navbarDropdownBlog" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Blog
-                      </a>
-                      <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownBlog">
-                        <li><a className="dropdown-item" href="/blog-home">Blog Home</a></li>
-                        <li><a className="dropdown-item" href="/blog-post">Blog Post</a></li>
-                      </ul>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </nav>
+            {/* <NavbarComponent/>   */}
     
             {/* Contact Form */}
             <section className="py-5">
@@ -121,22 +98,7 @@ function Join2() {
           </main>
     
           {/* Footer */}
-          <footer className="bg-dark py-4 mt-auto">
-            <div className="container px-5">
-              <div className="row align-items-center justify-content-between flex-column flex-sm-row">
-                <div className="col-auto">
-                  <div className="small m-0 text-white">Copyright &copy; Your Website 2023</div>
-                </div>
-                <div className="col-auto">
-                  <a className="link-light small" href="#!">Privacy</a>
-                  <span className="text-white mx-1">&middot;</span>
-                  <a className="link-light small" href="#!">Terms</a>
-                  <span className="text-white mx-1">&middot;</span>
-                  <a className="link-light small" href="#!">Contact</a>
-                </div>
-              </div>
-            </div>
-          </footer>
+          {/* <FooterComponent/> */}
         </div>
       );
 }
