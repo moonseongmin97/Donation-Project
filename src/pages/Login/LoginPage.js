@@ -28,8 +28,10 @@ function LoginPage() {
         setLoading(true);
 
         const { data, error } = await ApiCall({
-            url: '/api/members',
-            method: 'get',
+            //url: '/api/signup',
+            url: '/api/signup',
+            method: 'post',
+            payload : {id:'11' , username : 'yes'},
             onSuccess: handleSuccess,
             onError: handleError
         });
