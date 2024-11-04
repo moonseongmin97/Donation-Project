@@ -12,9 +12,10 @@ function LoginPage() {
     const navigate = useNavigate();
 
     const handleSuccess = (data) => {
-        setHello(data.message || "로그인 성공");
-        setId(data[0].username);
+        //setId(data.result.username);
+        //setId(data[0].username);
         console.log(data);
+        console.log("2222222222222222===="+JSON.stringify(data.data));
     };
 
     const handleError = (error) => {
@@ -29,9 +30,10 @@ function LoginPage() {
 
         const { data, error } = await ApiCall({
             //url: '/api/signup',
-            url: '/api/signup',
+            url: '/api/signIn',
             method: 'post',
-            payload : {id:'11' , username : 'yes'},
+            payload : {loginId:id , passwordHash : pw},
+             //payload : {id:111111 , username : 2222},
             onSuccess: handleSuccess,
             onError: handleError
         });
