@@ -1,5 +1,7 @@
 
-
+import React, { useEffect } from 'react';
+import Store from './pages/Common/Store'; // store를 불러옵니다.
+import { Provider } from 'react-redux';
 import LogIn from "./pages/Login/Login";
 import Join from "./pages/Login/Join";
 import Signup from "./pages/Login/Signup";
@@ -30,7 +32,32 @@ import { Routes, Route, BrowserRouter } from "react-router-dom";
 
 
 function App() {
+
+  useEffect(() => {
+    // 로컬 스토리지에서 세션 정보 불러오기
+    const token = localStorage.getItem('authToken');
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
+    if (token && userInfo) {
+        // 로그인 상태 설정 (Redux나 Context를 통해 상태 전파 가능)
+        console.log("로그인된 사용자:", userInfo);
+        // setUser(userInfo);  // Redux나 Context에 사용자 정보 저장
+    } else {
+        console.log("로그인 세션이 없습니다.");
+        // 로그아웃 상태로 설정
+        // clearUser();  // 상태 초기화
+    }
+}, []);
+
+
+
+
     return (
+
+      
+<Provider store={Store}>
+
+
       <BrowserRouter>
         {/* 공통 네비게이터  */}
         <NavbarComponent/>  
@@ -73,6 +100,9 @@ function App() {
         {/* 공통 푸터 footer  */}
         <FooterComponent/> 
       </BrowserRouter> 
+
+
+      </Provider>
     );
   }
   

@@ -3,6 +3,7 @@ import { Form, Button, Container, Row, Col, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from 'react-icons/bs'; // 화살표 아이콘
 import 'bootstrap/dist/css/bootstrap.min.css';
+import apiCall from '../Common/ApiCall';
 
 function Signup() {
     const [id, setId] = useState("");
@@ -15,10 +16,63 @@ function Signup() {
     const [nationCode, setNationCode] = useState("82");
     const navigate = useNavigate();
 
-    const handleSignup = (event) => {
-        event.preventDefault();
-        console.log({ id, password, email, name, birthday, gender, phone, nationCode });
+
+
+    const handleSuccess = (data) => {
+        //setId(data.result.username);
+        //setId(data[0].username);
+        console.log(JSON.stringify(data.success));
+
+        if(data.success){
+            alert("회원가입 성공");
+            alert(JSON.stringify(data));
+            if(!document.referrer){
+                navigate('/');
+            }else{
+                window.history.go(-1)
+            }
+        }else{
+            alert("회원가입 실패=="+data.message);
+            alert(JSON.stringify(data));
+
+        } 
+        //navigate('/Signup');
+        //console.log("2222222222222222===="+JSON.stringify(data.data));
     };
+    
+    const handleError = (data) => {
+        console.error("로그인 중 오류 발생:", data);
+        alert("로그인 실패"+data);
+    };
+
+    const handleSignUp = async (event) => {
+        event.preventDefault();
+        console.log("handleSubmit 실행");
+        event.preventDefault();
+
+        const { data, error } = await apiCall({
+            url: '/api/signUp',
+            //url: '/api/signIn',
+            method: 'post',
+            payload : {loginId : id , passwordHash : password , email : email , username : name , dateOfBirth : birthday  ,  gender : gender , phoneNumber : phone , postalCode : nationCode},
+             //payload : {id:111111 , username : 2222},
+            onSuccess: handleSuccess,
+            onError: handleError
+        });
+
+
+    };
+
+    // const goToSignup = () => {
+    //     navigate('/Signup');
+    // };
+
+
+
+
+
+
+
 
     return (
         <div className="d-flex flex-column min-vh-100">
@@ -29,7 +83,7 @@ function Signup() {
                     <Col md={8} lg={6}>
                         <Card className="p-4 position-relative">
                             <h2 className="text-center mb-4">회원가입</h2>
-                            <Form onSubmit={handleSignup}>
+                            <Form onSubmit={handleSignUp}>
                                 <Form.Group controlId="formId" className="mb-3">
                                     <Form.Label>아이디</Form.Label>
                                     <Form.Control
