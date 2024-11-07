@@ -64,9 +64,9 @@ function LoginPage() {
         //console.log("2222222222222222===="+JSON.stringify(data.data));
     };
     
-    const handleError = (data) => {
-        console.error("로그인 중 오류 발생:", data);
-        alert("로그인 실패"+data);
+    const handleError = (err) => {
+        console.error("로그인 중 오류 발생:", err);
+        alert("로그인 실패"+err);
         setHello("로그인 실패");
     };
 
@@ -79,7 +79,7 @@ function LoginPage() {
             //url: '/api/signUp',
             url: '/api/signIn',
             method: 'post',
-            payload : {loginId:id , passwordHash : pw , email : 'h22234'},
+            payload : {loginId:id , passwordHash : pw },
              //payload : {id:111111 , username : 2222},
             onSuccess: handleSuccess,
             onError: handleError

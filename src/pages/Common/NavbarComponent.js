@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, Button } from 'react-bootstrap';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch ,useSelector  } from 'react-redux';
 import { FaArrowLeft } from 'react-icons/fa';
+import { logout } from './userSlice';
+import ApiCall from '../Common/ApiCall';
+
 
 function NavbarComponent() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
     const location = useLocation(); // 현재 경로 가져오기
+    const dispatch = useDispatch();
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const user = useSelector((state) => state.user.user);
 
     useEffect(() => {
         const userLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
@@ -17,14 +24,20 @@ function NavbarComponent() {
         navigate(-1); // 이전 페이지로 이동
     };
 
-    const handleLoginLogout = () => {
-        if (isLoggedIn) {
-            localStorage.removeItem('isLoggedIn');
-            setIsLoggedIn(false)
-           // navigate('/');
-        } else {
-            localStorage.setItem('isLoggedIn', 'true');
+    const handleLoginLogout = async () => {
+        if (isAuthenticated) {
             navigate('/LoginPage');
+        } else {
+            dispatch(logout(null)); 
+            const { data, error } = await ApiCall({
+                //url: '/api/signUp',
+                url: '/api/logout',
+                method: 'post',
+                payload : {},
+                //onSuccess: handleSuccess,
+                //onError: handleError
+            });
+    
         }
     };
 
@@ -49,7 +62,7 @@ function NavbarComponent() {
                         <Nav.Link href="/contact">문의</Nav.Link>
                         <Nav.Link href="/pricing">가격</Nav.Link>
                         <Nav.Link onClick={handleLoginLogout}>
-                            {isLoggedIn ? '로그아웃' : '로그인'}
+                            {isAuthenticated ? '로그아웃' : '로그인'}
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

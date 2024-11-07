@@ -1,7 +1,11 @@
 // src/components/Common/apiCall.js
 import axios from 'axios';
+import { login, logout } from './userSlice';
+import store from './Store'
+import { json } from 'react-router-dom';
 
-async function apiCall({ url, method , payload , onSuccess, onError }) {
+
+async function apiCall({ url, method , payload , onSuccess, onError }) {    
     try {
         console.log("Fetching data from:", url);
         const response = await axios({ 
@@ -15,8 +19,16 @@ async function apiCall({ url, method , payload , onSuccess, onError }) {
                                        ...(method === 'get' ? {} : { data: payload }) 
                                     });                                               
         if (onSuccess) onSuccess(response.data); // 성공 콜백  
+        console.log("성공요"+response.data);
         return { data: response.data, error: null };
     } catch (err) {
+        if (err.response && err.response.status === 401) {
+            //리덕스에 로그인 상태값  false 주고
+            // 페이지 로그인페이지로 변경                    
+            store.dispatch(logout(null)); // login 액션을 디스패치합니다.
+            window.location.href = '/loginPage';       
+            return { data: null, error: err };
+        }
         if (onError) onError(err); // 에러 콜백
         return { data: null, error: err };
     }
