@@ -10,7 +10,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         login(state, action) {
-            console.log("액션 시작");            
+            //console.log("액션 시작");            
             state.isAuthenticated = true;
             state.user = action.payload;
         },

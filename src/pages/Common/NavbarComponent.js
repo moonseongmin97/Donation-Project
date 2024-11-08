@@ -16,25 +16,37 @@ function NavbarComponent() {
     const user = useSelector((state) => state.user.user);
 
     useEffect(() => {
-        const userLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(userLoggedIn);
-    }, []);
+        //const userLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        setIsLoggedIn(isAuthenticated);
+        console.log("실행=="+isAuthenticated+"로그인 상태 =="+isLoggedIn);
+    }, [isAuthenticated]);
 
     const goBack = () => {
         navigate(-1); // 이전 페이지로 이동
     };
 
+    const handleSuccess = () => {
+        // 쿠키 삭제 함수
+        console.log("jwtToken = 삭제" )
+        //localStorage.removeItem("jwtToken")
+        document.cookie = 'jwtToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+
+        console.log("jwtToken = 삭제" )
+        dispatch(logout(null)); // login 액션을 디스패치합니다.
+        
+  };
+        
     const handleLoginLogout = async () => {
-        if (isAuthenticated) {
+        if (!isLoggedIn) {
+            console.log("트루야 여기야!!");
             navigate('/LoginPage');
         } else {
             dispatch(logout(null)); 
             const { data, error } = await ApiCall({
-                //url: '/api/signUp',
                 url: '/api/logout',
                 method: 'post',
                 payload : {},
-                //onSuccess: handleSuccess,
+                onSuccess: handleSuccess,
                 //onError: handleError
             });
     
@@ -62,7 +74,7 @@ function NavbarComponent() {
                         <Nav.Link href="/contact">문의</Nav.Link>
                         <Nav.Link href="/pricing">가격</Nav.Link>
                         <Nav.Link onClick={handleLoginLogout}>
-                            {isAuthenticated ? '로그아웃' : '로그인'}
+                            {isLoggedIn ? '로그아웃' : '로그인'}
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

@@ -5,6 +5,7 @@ import { login } from '.././Common/userSlice'; // login 액션이 정의된 경�
 import { useNavigate } from 'react-router-dom';
 import ApiCall from '../Common/ApiCall';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { a } from 'react-spring';
 
 
 
@@ -34,9 +35,10 @@ function LoginPage() {
 
     // 리덕스
     const handleLogin22 = () => {
-        console.log("권한 값3=="+JSON.stringify(user));
-        const fakeUser = { username: '문성민', email: '문성민@example.com' };
-        dispatch(login(fakeUser)); // login 액션을 디스패치합니다.
+        
+        const fakeUser2 = "ㅎ2";
+        dispatch(login(fakeUser2)); // login 액션을 디스패치합니다.
+        
         console.log("권한 값4=="+JSON.stringify(user));
     };
 
@@ -51,6 +53,8 @@ function LoginPage() {
             alert("로그인 성공");
             alert(JSON.stringify(data));
             if(!document.referrer){
+                dispatch(login("h2")); // login 액션을 디스패치합니다.
+                alert("=="+user+"22"+isAuthenticated);
                 navigate('/');
             }else{
                 window.history.go(-1)

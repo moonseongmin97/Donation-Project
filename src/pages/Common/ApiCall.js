@@ -19,7 +19,6 @@ async function apiCall({ url, method , payload , onSuccess, onError }) {
                                        ...(method === 'get' ? {} : { data: payload }) 
                                     });                                               
         if (onSuccess) onSuccess(response.data); // 성공 콜백  
-        console.log("성공요"+response.data);
         return { data: response.data, error: null };
     } catch (err) {
         if (err.response && err.response.status === 401) {
