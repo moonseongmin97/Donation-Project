@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect  } from 'react';
 import { useDispatch ,useSelector  } from 'react-redux';
 import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { login } from '.././Common/userSlice'; // login 액션이 정의된 경로를 확인하세요
@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ApiCall from '../Common/ApiCall';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { a } from 'react-spring';
+
 
 
 
@@ -21,28 +22,12 @@ function LoginPage() {
     const dispatch = useDispatch();
     const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
     const user = useSelector((state) => state.user.user);
-
-
-
-    // 리덕스
-    const handleLogin = () => {
-        alert("리덕스 시작");
-        console.log("권한 값==1"+JSON.stringify(user));
-        const fakeUser = { username: 'testUser', email: 'test@example.com' };
-        dispatch(login(fakeUser)); // login 액션을 디스패치합니다.
-        console.log("권한 값2=="+JSON.stringify(user));
-    };
-
-    // 리덕스
-    const handleLogin22 = () => {
-        
-        const fakeUser2 = "ㅎ2";
-        dispatch(login(fakeUser2)); // login 액션을 디스패치합니다.
-        
-        console.log("권한 값4=="+JSON.stringify(user));
-    };
-
-
+    
+    useEffect(() => {
+      if (isAuthenticated) {
+        navigate('/'); // 로그인된 사용자는 홈으로 리디렉션
+      }
+    }, [isAuthenticated, navigate]);
 
     const handleSuccess = (data) => {
         //setId(data.result.username);
@@ -50,22 +35,18 @@ function LoginPage() {
         console.log(JSON.stringify(data.success));
 
         if(data.success){
-            alert("로그인 성공");
-            alert(JSON.stringify(data));
             if(!document.referrer){
-                dispatch(login("h2")); // login 액션을 디스패치합니다.
-                alert("=="+user+"22"+isAuthenticated);
+                dispatch(login(null)); // login 액션을 디스패치합니다.                         
                 navigate('/');
             }else{
-                window.history.go(-1)
+                dispatch(login(null)); // login 액션을 디스패치합니다.
+                navigate('/');
+                //window.history.go(-1)
             }
         }else{
-            alert("로그인 실패=="+data.message);
-            alert(JSON.stringify(data));
-
-        } 
-        //navigate('/Signup');
-        //console.log("2222222222222222===="+JSON.stringify(data.data));
+            alert("로그인 실패==");
+            console.log(JSON.stringify(data));
+        }
     };
     
     const handleError = (err) => {
@@ -80,11 +61,9 @@ function LoginPage() {
         setLoading(true);
 
         const { data, error } = await ApiCall({
-            //url: '/api/signUp',
             url: '/api/signIn',
             method: 'post',
             payload : {loginId:id , passwordHash : pw },
-             //payload : {id:111111 , username : 2222},
             onSuccess: handleSuccess,
             onError: handleError
         });
@@ -92,13 +71,6 @@ function LoginPage() {
         setLoading(false);
     };
 
-    // 로그인 성공 시 세션 스토리지에 세션 정보 저장
-    const saveLoginSession  = (token, userInfo) => {
-    sessionStorage.setItem('authToken', token);
-    sessionStorage.setItem('userInfo', JSON.stringify(userInfo));
-    localStorage.setItem('authToken', token);
-    localStorage.setItem('userInfo', JSON.stringify(userInfo));
-    }
 
     const goToSignup = () => {
         navigate('/Signup');
@@ -145,8 +117,6 @@ function LoginPage() {
                                             {loading ? '로그인 중...' : '로그인'}
                                         </Button>
                                         <Button variant="outline-secondary" className="w-100" onClick={goToSignup}>회원가입</Button>
-                                        <Button variant="outline-secondary" className="w-100" onClick={handleLogin}>테스트 버튼</Button> 
-                                        <Button variant="outline-secondary" className="w-100" onClick={handleLogin22}>값 변경 버튼</Button> 
                                     </Form>
                                     {hello && <p className="text-center mt-3">{hello}</p>}
                                 </Col>

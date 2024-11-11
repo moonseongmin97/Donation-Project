@@ -1,12 +1,48 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice'; // 나중에 정의할 리듀서
+import userReducer, { login, logout } from './userSlice';
+import ApiCall from '../Common/ApiCall';
+import { Alert } from 'react-bootstrap';
 
-const Store = configureStore({
+const store = configureStore({
     reducer: {
         user: userReducer,
-        //player : payelrReu
-        // 다른 리듀서도 여기에 추가 가능
+        // 다른 리듀서를 추가할 수 있습니다
     },
 });
 
-export default Store;
+const handleSuccess = (data) => {
+    console.log("성공~~");
+    if (data.success) {
+        if(data.result.loginYn){
+            console.log("토큰 조회 정상 로그인한 사용자 ===");
+            store.dispatch(login(null)); // 추후 널 대신에 사용할 거 추가 ex 사용장 이름? 등등 리턴 받자
+        }else{
+            console.log("비로그인 정상 사용자==");
+            store.dispatch(logout(null)); // 여기서도 store.dispatch 사용
+        }
+    } else {
+        alert("로그인 체크 실패==" + data.message);
+        console.log(JSON.stringify(data));
+        //store.dispatch(logout(null)); // 여기서도 store.dispatch 사용
+    }
+};
+
+const handleError = (err) => {
+    console.error("로그인 체크 중 오류 발생:", err);
+    alert("로그인 실패" );
+    
+};
+
+const apiCall = () => {
+    ApiCall({
+        url: '/api/loginCheck',
+        method: 'post',
+        payload : {},
+        onSuccess: handleSuccess,
+        onError: handleError,
+    });
+};
+
+apiCall();
+
+export default store;

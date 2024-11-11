@@ -21,11 +21,15 @@ async function apiCall({ url, method , payload , onSuccess, onError }) {
         if (onSuccess) onSuccess(response.data); // 성공 콜백  
         return { data: response.data, error: null };
     } catch (err) {
+        console.log("세션 만료...")  ;
         if (err.response && err.response.status === 401) {
             //리덕스에 로그인 상태값  false 주고
-            // 페이지 로그인페이지로 변경                    
+            // 페이지 로그인페이지로 변경 
+                             
             store.dispatch(logout(null)); // login 액션을 디스패치합니다.
-            window.location.href = '/loginPage';       
+            //window.location.href = '/loginPage';        이거 잘써야겠네 무한 루프도네..
+
+
             return { data: null, error: err };
         }
         if (onError) onError(err); // 에러 콜백
