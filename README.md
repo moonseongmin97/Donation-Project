@@ -19,7 +19,18 @@
 5. 데이터 복제는 나중에 하자 
 
 
-#
+#덤프 백업 및 세팅 하는법
+덤프 세팅
+1. C:\Program Files\PostgreSQL\14\bin  (덤프는 해당 경로로 이동 시켜야함)
+-> 관리자 cmd로 pg_restore -U postgres -h localhost -p 5432 -d DONATE_DB1 -c -F c DONATE_DB1_backup.dump
+비번 입력1111
+
+덤프 백업
+1. C:\Program Files\PostgreSQL\14\bin    (덤프는 내스토리지에 옮겨야함)
+->관리자 cmd로 pg_dump -U postgres -h localhost -p 5432 -d DONATE_DB1 -F c -f DONATE_DB1_backup.dump
+비번 입력1111
+
+
 
 
 1. 기획
