@@ -46,10 +46,25 @@ function DonatePage() {
         setIsSubmitted(true);
     };
 
+    
+    // 기부 등록하는거 시작해보자
+    const donateApi = () => {
+        ApiCall({
+            url: '/api/loginCheck',
+            method: 'post',
+            payload : {
+                amount : amount,
+                donorName : donorName,
+                message : message
+            },
+            onSuccess: handleSuccess,
+            onError: handleError,
+        });
+    };
+
     return (
         <Container className="py-5">
             <h2 className="text-center mb-4">기부하기</h2>
-
             {!isSubmitted ? 
             <DonateDetail            
             donorName={donorName}

@@ -14,14 +14,14 @@ const handleSuccess = (data) => {
     console.log("성공~~");
     if (data.success) {
         if(data.result.loginYn){
-            console.log("토큰 조회 정상 로그인한 사용자 ===");
+            console.log("message==" +data.message);
             store.dispatch(login(null)); // 추후 널 대신에 사용할 거 추가 ex 사용장 이름? 등등 리턴 받자
         }else{
-            console.log("비로그인 정상 사용자==");
+            console.log("message==" +data.message);
             store.dispatch(logout(null)); // 여기서도 store.dispatch 사용
         }
     } else {
-        alert("로그인 체크 실패==" + data.message);
+        console.log("message==" +data.message);
         console.log(JSON.stringify(data));
         //store.dispatch(logout(null)); // 여기서도 store.dispatch 사용
     }
@@ -34,10 +34,11 @@ const handleError = (err) => {
 };
 
 const apiCall = () => {
+    const loginYn = store.getState().user.isAuthenticated
     ApiCall({
         url: '/api/loginCheck',
         method: 'post',
-        payload : {},
+        payload : {loginYn :loginYn },
         onSuccess: handleSuccess,
         onError: handleError,
     });

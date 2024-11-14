@@ -13,10 +13,10 @@ import Home from "./pages/Main/Home";
 import About from "./pages/Main/About";
 import BlogHome from "./pages/Main/BlogHome";
 // import 구문에서 대소문자가 정확히 맞는지 확인
-import DonateList from './pages/Main/DonateList';
+import DonateList from './pages/Donate/DonateList';
 
 import DisplayVod from "./pages/Main/DisplayVod";
-import Donate from "./pages/Main/DonatePage";
+import Donate from "./pages/Donate/DonatePage";
 
 
 import Contact from "./SamplePage/Contact";
