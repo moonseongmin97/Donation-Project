@@ -4,6 +4,7 @@ import { Button, Form, Container, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import DonateDetail from './DonateDetail';
 import DonateSendDetail from './DonateSendDetail';
+import ApiCall from '../Common/ApiCall';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function DonatePage() {
@@ -57,8 +58,8 @@ function DonatePage() {
                 donorName : donorName,
                 message : message
             },
-            onSuccess: handleSuccess,
-            onError: handleError,
+           // onSuccess: handleSuccess,
+           // onError: handleError,
         });
     };
 
