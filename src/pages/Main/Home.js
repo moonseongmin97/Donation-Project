@@ -3,32 +3,14 @@ import { Link } from 'react-router-dom';
 import '../../main/_static/css/main.css';
 import NavbarComponent from '../Common/NavbarComponent';
 import FooterComponent from '../Common/FooterComponent';
+import ApiCall from '../Common/ApiCall';
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TotAmt from './TotAmt';
 
 function Home() {
-    const [totalDonation, setTotalDonation] = useState(0);
-    const [displayedDonation, setDisplayedDonation] = useState(0);
+    
 
-    // 총 기부 금액 애니메이션 효과
-    useEffect(() => {
-        const targetDonation = 500000; // 임의의 목표 기부 금액
-        const increment = Math.ceil(targetDonation / 100);
-
-        const interval = setInterval(() => {
-            setDisplayedDonation(prev => {
-                if (prev + increment >= targetDonation) {
-                    clearInterval(interval);
-                    return targetDonation;
-                }
-                return prev + increment;
-            });
-        }, 30);
-        
-        setTotalDonation(targetDonation);
-        
-        return () => clearInterval(interval);
-    }, []);
 
 // 테스트용 슬라이드 이미지 데이터
 const images = [
@@ -62,16 +44,7 @@ const images = [
                     </Carousel>
                 </header>
 
-                {/* Donation Status Section */}
-                <section className="py-5 bg-light">
-                    <div className="container px-5 my-5 text-center">
-                        <h2 className="fw-bold">현재까지의 총 기부 금액</h2>
-                        <h1 className="display-3 fw-bold" style={{ color: "#28a745", animation: "fadeIn 2s" }}>
-                            {displayedDonation.toLocaleString()}원
-                        </h1>
-                        <p className="text-muted">목표 금액: {totalDonation.toLocaleString()}원</p>
-                    </div>
-                </section>
+                <TotAmt/>
 
                 {/* Sections with Animation */}
                 <section className="py-5">

@@ -34,6 +34,17 @@ function DonatePage() {
 
     // 기부 결정 시 처리
     const handleConfirm = () => {
+        ApiCall({
+            url: '/api/donateInsert',
+            method: 'post',
+            payload : {
+                amount : amount,
+                userName : donorName,
+                message : message
+            },
+           // onSuccess: handleSuccess,
+           // onError: handleError,
+        });
         alert("기부가 최종적으로 완료되었습니다!");
         // 여기에서 최종 기부 결정을 처리하는 로직 추가 (예: 서버에 데이터 전송)
     };
@@ -50,17 +61,7 @@ function DonatePage() {
     
     // 기부 등록하는거 시작해보자
     const donateApi = () => {
-        ApiCall({
-            url: '/api/loginCheck',
-            method: 'post',
-            payload : {
-                amount : amount,
-                donorName : donorName,
-                message : message
-            },
-           // onSuccess: handleSuccess,
-           // onError: handleError,
-        });
+
     };
 
     return (

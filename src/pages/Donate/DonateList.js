@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import TotAmt from '../Main/TotAmt';
 
 function DonateList() {
     const [members, setMembers] = useState([]);
@@ -82,12 +83,19 @@ function DonateList() {
 
             <main className="flex-shrink-0">
                 {/* 총 기부 금액 표시 섹션 */}
+                <TotAmt/>
+
+
+                {/*
                 <section className="py-4 text-center">
                     <h3 className="text-muted">이달의 총 기부 금액</h3>
                     <h1 className="display-4 fw-bold" style={{ color: "#28a745" }}>
                         ${displayedAmount.toLocaleString()}
                     </h1>
                 </section>
+                 */}
+                
+                 
 
                 {/* 중간에 위치한 헤더 */}
                 <section className="py-3 text-center">
