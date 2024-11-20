@@ -54,3 +54,60 @@
 }
 
 
+/* 채팅 버튼 css 시작 */
+
+/* 드래그 가능한 버튼 */
+.floating-button {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #007bff;
+    color: white;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab; /* 드래그 시 포인터 변경 */
+    z-index: 1000;
+    transition: transform 0.2s ease; /* 부드러운 이동 효과 */
+}
+
+/* 드래그 중 상태 */
+.floating-button:active {
+    cursor: grabbing;
+}
+
+/* 모달 배경 */
+.chat-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* 모달 내용 */
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 300px; /* 가로 크기 */
+    height: 70%; /* 세로 크기 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    overflow: hidden;
+}
+
+
+
+
+

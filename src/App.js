@@ -29,6 +29,8 @@ import ShortsContainer from "./pages/Main/ShortsContainer";
 import NavbarComponent from './pages/Common/NavbarComponent';
 import FooterComponent from './pages/Common/FooterComponent';
 
+import FloatingChatButton from "./pages/chat/FloatingChatButton";
+
 import Test from "./SamplePage/react-page";
 import CampaignList from "./CampaignList";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
@@ -48,8 +50,10 @@ function App() {
 
       <BrowserRouter>
         {/* 공통 네비게이터  */}
-        <NavbarComponent/>  
-
+        <NavbarComponent/>          
+        {/* 공통 버튼 */}
+        <FloatingChatButton /> 
+        
         <Routes>
           {/* 웰컴 페이지 */}
           <Route path="*" element={<Welcome/>} />  {/* 경로가 없을 때 웰컴 페이지 */}
