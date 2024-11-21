@@ -1,5 +1,7 @@
 import React, { useState, useRef  } from 'react';
 import '../../main/_static/css/main.css';
+import FloatingChatArea from './FloatingChatArea';
+
 
 function FloatingChatButton() {
     const [position, setPosition] = useState(() => {
@@ -47,6 +49,10 @@ function FloatingChatButton() {
         }
     };
 
+    const handleCloseChat= () => {       
+            setIsChatOpen(false); // 드래그 중이 아닐 때만 채팅창 열기/닫기        
+    };
+
     return (
         <div>
             {/* 드래그 가능한 원형 버튼 */}
@@ -63,12 +69,7 @@ function FloatingChatButton() {
 
             {/* 채팅창 모달 */}
             {isChatOpen && (
-                <div className="chat-modal">
-                    <div className="modal-content">
-                        <p>여기에 채팅창 컴포넌트를 추가하세요!</p>
-                        <button onClick={() => setIsChatOpen(false)}>닫기</button>
-                    </div>
-                </div>
+                <FloatingChatArea  handleCloseChat={handleCloseChat}/>
             )}
         </div>
     );
