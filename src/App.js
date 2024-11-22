@@ -44,8 +44,6 @@ function App() {
 
     return (
 
-      
-<Provider store={Store}>
 
 
       <BrowserRouter>
@@ -98,8 +96,6 @@ function App() {
         <FooterComponent/> 
       </BrowserRouter> 
 
-
-      </Provider>
     );
   }
   

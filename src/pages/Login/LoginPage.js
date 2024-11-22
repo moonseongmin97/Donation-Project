@@ -32,14 +32,14 @@ function LoginPage() {
     const handleSuccess = (data) => {
         //setId(data.result.username);
         //setId(data[0].username);
-        console.log(JSON.stringify(data.success));
-
+        console.log("로그인 성공"+JSON.stringify(data));
+        console.log("세팅전---"+user);
         if(data.success){
             if(!document.referrer){
-                dispatch(login(null)); // login 액션을 디스패치합니다.                         
+                dispatch(login(data.result.username)); // login 액션을 디스패치합니다.                         
                 navigate('/');
             }else{
-                dispatch(login(null)); // login 액션을 디스패치합니다.
+                dispatch(login(data.result.username)); // login 액션을 디스패치합니다.
                 navigate('/');
                 //window.history.go(-1)
             }
@@ -47,6 +47,7 @@ function LoginPage() {
             alert("로그인 실패==");
             console.log(JSON.stringify(data));
         }
+        console.log("후발대---"+user);
     };
     
     const handleError = (err) => {

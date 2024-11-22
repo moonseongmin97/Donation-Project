@@ -1,7 +1,6 @@
-import React, { useState, useRef  } from 'react';
+import React, { useState, useRef } from 'react';
 import '../../main/_static/css/main.css';
 import FloatingChatArea from './FloatingChatArea';
-
 
 function FloatingChatButton() {
     const [position, setPosition] = useState(() => {
@@ -11,12 +10,12 @@ function FloatingChatButton() {
 
     const [isChatOpen, setIsChatOpen] = useState(false); // 채팅창 상태 관리
     const buttonRef = useRef(null);
-    const isDragging = useRef(false);
+    const isDragging = useRef(false); // 드래그 여부 판단
     const offset = useRef({ x: 0, y: 0 });
 
     const handleMouseDown = (e) => {
         e.preventDefault();
-        isDragging.current = true;
+        isDragging.current = false; // 드래그 초기화
         const rect = buttonRef.current.getBoundingClientRect();
         offset.current = {
             x: e.clientX - rect.left,
@@ -27,30 +26,27 @@ function FloatingChatButton() {
     };
 
     const handleMouseMove = (e) => {
-        if (isDragging.current) {
-            const newPosition = {
-                top: e.clientY - offset.current.y,
-                left: e.clientX - offset.current.x,
-            };
-            setPosition(newPosition);
-            localStorage.setItem('chatButtonPosition', JSON.stringify(newPosition));
-        }
+        isDragging.current = true; // 이동 중이면 드래그 상태로 설정
+        const newPosition = {
+            top: e.clientY - offset.current.y,
+            left: e.clientX - offset.current.x,
+        };
+        setPosition(newPosition);
+        localStorage.setItem('chatButtonPosition', JSON.stringify(newPosition));
     };
 
     const handleMouseUp = () => {
-        isDragging.current = false;
         window.removeEventListener('mousemove', handleMouseMove);
         window.removeEventListener('mouseup', handleMouseUp);
-    };
 
-    const handleClick = () => {
+        // 드래그 상태가 아닌 경우에만 채팅창 열기/닫기
         if (!isDragging.current) {
-            setIsChatOpen(!isChatOpen); // 드래그 중이 아닐 때만 채팅창 열기/닫기
+            setIsChatOpen(!isChatOpen);
         }
     };
 
-    const handleCloseChat= () => {       
-            setIsChatOpen(false); // 드래그 중이 아닐 때만 채팅창 열기/닫기        
+    const handleCloseChat = () => {
+        setIsChatOpen(false);
     };
 
     return (
@@ -61,15 +57,14 @@ function FloatingChatButton() {
                 className="floating-button"
                 style={{ top: `${position.top}px`, left: `${position.left}px` }}
                 onMouseDown={handleMouseDown}
-                onMouseUp={handleMouseUp}
-                onClick={handleClick} // 클릭 이벤트 추가
+                onClick={(e) => e.preventDefault()} // 클릭 이벤트 무시
             >
                 💬
             </div>
 
             {/* 채팅창 모달 */}
             {isChatOpen && (
-                <FloatingChatArea  handleCloseChat={handleCloseChat}/>
+                <FloatingChatArea handleCloseChat={handleCloseChat} />
             )}
         </div>
     );

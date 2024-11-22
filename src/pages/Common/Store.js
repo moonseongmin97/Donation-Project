@@ -1,7 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer, { login, logout } from './userSlice';
 import ApiCall from '../Common/ApiCall';
+import { useDispatch ,useSelector  } from 'react-redux';
 import { Alert } from 'react-bootstrap';
+
 
 const store = configureStore({
     reducer: {
@@ -14,8 +16,7 @@ const handleSuccess = (data) => {
     console.log("성공~~");
     if (data.success) {
         if(data.result.loginYn){
-            console.log("message==" +data.message);
-            store.dispatch(login(null)); // 추후 널 대신에 사용할 거 추가 ex 사용장 이름? 등등 리턴 받자
+            store.dispatch(login(data.result.username)); // 추후 널 대신에 사용할 거 추가 ex 사용장 이름? 등등 리턴 받자
         }else{
             console.log("message==" +data.message);
             store.dispatch(logout(null)); // 여기서도 store.dispatch 사용
