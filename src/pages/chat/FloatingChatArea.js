@@ -15,7 +15,8 @@ function FloatingChatArea({ handleCloseChat }) {
 
     useEffect(() => {
         const address = "ws://localhost:8082/chat?roomId=123";
-        socketRef.current = new WebSocket(address);
+        socketRef.current = new WebSocket(address, [], { withCredentials: true });
+        
         socketRef.current.onopen = () => {
             setIsSocketOpen(true);        
         };
