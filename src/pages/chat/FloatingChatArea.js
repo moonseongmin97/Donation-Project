@@ -1,8 +1,11 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch ,useSelector  } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
 import "../../main/_static/css/main.css";
+import ApiCall from '../Common/ApiCall';
 
 function FloatingChatArea({ handleCloseChat }) {
+    const navigate = useNavigate();
     const [addMsg, setAddMsg] = useState([]); // 메시지 리스트
     const [isSocketOpen, setIsSocketOpen] = useState(false); // 소켓 연결 상태
     const [inputMsg, setInputMsg] = useState(""); // 입력 메시지
@@ -10,13 +13,16 @@ function FloatingChatArea({ handleCloseChat }) {
     const dragOffset = useRef({ x: 0, y: 0 }); // 드래그 시작 위치
     const socketRef = useRef(null); // WebSocket 참조
     const msgAreaRef = useRef(null); // 메시지 영역 참조
+    const [nickname, setNickname] = useState(null); // 닉네임 상태
+    const [nicknameInput, setNicknameInput] = useState(""); // 닉네임 입력 필드 상태
     const user = useSelector((state) => state.user.user) || "비회원";
-
+    const nickName = useSelector((state) => state.user.nickName) ;
+    const dispatch = useDispatch();
 
     useEffect(() => {
+        alert(user+"=="+nickName);
         const address = "ws://localhost:8082/chat?roomId=123";
         socketRef.current = new WebSocket(address, [], { withCredentials: true });
-        
         socketRef.current.onopen = () => {
             setIsSocketOpen(true);        
         };
@@ -75,6 +81,39 @@ function FloatingChatArea({ handleCloseChat }) {
             if (inputMsg.trim()) sendMsg();
         }
     };
+
+    const handleNicknameSave = () => {
+        ApiCall({
+            url: '/api/setNickName',
+            method: 'POST',
+            payload : {
+                nickName : nicknameInput,
+            },
+             onSuccess: (response) => {
+                if(response.success){
+                    alert("설정 성공=="+response.message);
+                }else{
+                    alert("설정 실패=="+response.message);
+                }             
+             //dispatch.login(response.result)
+                // Redux Store에 업데이트
+                dispatch.login(response.result);
+
+                console.log("반환 값==="+JSON.stringify(response))
+                //리덕스에 닉네임 설정
+            // API 호출 성공 후 바로 진행
+            //setNickname(nicknameInput.trim());
+            //alert(`닉네임이 "${nicknameInput.trim()}"(으)로 설정되었습니다.`);
+            setNicknameInput(""); // 입력 필드 초기화
+            },
+            onError: (error) => {
+                // API 호출 실패 시 처리
+                console.error("API 호출 실패:", error);
+                alert("닉네임 설정에 실패했습니다. 다시 시도해주세요.");
+            }        
+        });
+    };
+
 
     const sendMsg = () => {
         const msg = { user: user , msg: inputMsg };
@@ -135,17 +174,40 @@ function FloatingChatArea({ handleCloseChat }) {
                     ))}
                 </div>
                 <div className="input-area">
-                    <input
-                        type="text"
-                        value={inputMsg}
-                        onChange={(e) => setInputMsg(e.target.value)}
-                        onKeyDown={handleKeyPress} // Enter 키 이벤트 추가
-                        placeholder="메시지를 입력하세요"
-                        className="message-input"
-                    />
-                    <button onClick={sendMsg} className="send-button">
-                        메세지 전송
-                    </button>
+                {(user == null || user == '비회원'  ) ? (
+                        <div className="auth-prompt">
+                            <button  className="login-button" onClick={() => navigate("/LoginPage")}>
+                               채팅 로그인 하러 가기
+                            </button>
+                        </div>
+                    ) : (nickName==null) ? (
+                        <div className="auth-prompt">
+                        <input
+                            type="text"
+                            value={nicknameInput}
+                            onChange={(e) => setNicknameInput(e.target.value)}
+                            placeholder="닉네임을 입력하세요"
+                            className="nickname-input"
+                        />
+                        <button onClick={handleNicknameSave} className="save-button">
+                            설정
+                        </button>
+                    </div>
+                    ) : (
+                        <>
+                            <input
+                                type="text"
+                                value={inputMsg}
+                                onChange={(e) => setInputMsg(e.target.value)}
+                                onKeyDown={handleKeyPress}
+                                placeholder="메시지를 입력하세요"
+                                className="message-input"
+                            />
+                            <button onClick={sendMsg} className="send-button">
+                                메세지 전송
+                            </button>
+                        </>
+                    )}
                 </div>
             </div>
         </div>

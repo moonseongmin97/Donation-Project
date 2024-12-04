@@ -16,7 +16,7 @@ const handleSuccess = (data) => {
     console.log("성공~~");
     if (data.success) {
         if(data.result.loginYn){
-            store.dispatch(login(data.result.username)); // 추후 널 대신에 사용할 거 추가 ex 사용장 이름? 등등 리턴 받자
+            store.dispatch(login(data.result)); // 추후 널 대신에 사용할 거 추가 ex 사용장 이름? 등등 리턴 받자
         }else{
             console.log("message==" +data.message);
             store.dispatch(logout(null)); // 여기서도 store.dispatch 사용

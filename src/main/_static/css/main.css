@@ -233,3 +233,82 @@
     border-color: #ff0000; /* 호버 시 테두리도 빨간색으로 */
     background-color: #f9f9f9; /* 호버 시 약간의 배경색 추가 */
 }
+
+
+/* 채팅창 관련 CSS   */
+.auth-prompt {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; /* 입력창과 버튼 간격 */
+    margin-top: 10px;
+}
+
+.auth-prompt p {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.auth-prompt .login-button,
+.auth-prompt .nickname-button {
+    display: inline-block;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-prompt .login-button:hover,
+.auth-prompt .nickname-button:hover {
+    background-color: #0056b3;
+}
+
+.auth-prompt .login-button:focus,
+.auth-prompt .nickname-button:focus {
+    outline: none;
+    box-shadow: 0 0 3px #0056b3;
+}
+
+
+.nickname-input {
+    width: 70%;
+    max-width: 400px;
+    padding: 6px 12px;;
+    font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 5px 0 0 5px; /* 버튼과 연결되도록 둥근 모서리 */
+    outline: none;
+    box-sizing: border-box;
+}
+
+.nickname-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.save-button {
+    padding: 6px 12px; /* 패딩을 줄여 버튼 크기 축소 */
+    font-size: 14px; /* 글자 크기 조정 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #007bff;
+    border-radius: 0 5px 5px 0; /* 텍스트창과 연결되도록 둥근 모서리 */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    outline: none;
+}
+
+.save-button:hover {
+    background-color: #0056b3;
+}
+
+.save-button:focus {
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
