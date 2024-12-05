@@ -15,12 +15,10 @@ function FloatingChatArea({ handleCloseChat }) {
     const msgAreaRef = useRef(null); // 메시지 영역 참조
     const [nickname, setNickname] = useState(null); // 닉네임 상태
     const [nicknameInput, setNicknameInput] = useState(""); // 닉네임 입력 필드 상태
+    const [isNicknameSet, setIsNicknameSet] = useState(false);
     const user = useSelector((state) => state.user.user) || "비회원";
-    const nickName = useSelector((state) => state.user.nickName) ;
-    const dispatch = useDispatch();
 
     useEffect(() => {
-        alert(user+"=="+nickName);
         const address = "ws://localhost:8082/chat?roomId=123";
         socketRef.current = new WebSocket(address, [], { withCredentials: true });
         socketRef.current.onopen = () => {
@@ -59,6 +57,8 @@ function FloatingChatArea({ handleCloseChat }) {
         };
     }, []);
 
+
+
     const handleEscKey = (e) => {
         if (e.key === "Escape") {
             handleCloseChat();
@@ -91,20 +91,13 @@ function FloatingChatArea({ handleCloseChat }) {
             },
              onSuccess: (response) => {
                 if(response.success){
-                    alert("설정 성공=="+response.message);
+                    console.log("반환 값==="+JSON.stringify(response.result.nickname))
+                    setNicknameInput(response.result.nickname); // 입력 필드 초기화
+                    setNickname(response.result.nickname)
+                    setIsNicknameSet(true);
                 }else{
                     alert("설정 실패=="+response.message);
                 }             
-             //dispatch.login(response.result)
-                // Redux Store에 업데이트
-                dispatch.login(response.result);
-
-                console.log("반환 값==="+JSON.stringify(response))
-                //리덕스에 닉네임 설정
-            // API 호출 성공 후 바로 진행
-            //setNickname(nicknameInput.trim());
-            //alert(`닉네임이 "${nicknameInput.trim()}"(으)로 설정되었습니다.`);
-            setNicknameInput(""); // 입력 필드 초기화
             },
             onError: (error) => {
                 // API 호출 실패 시 처리
@@ -115,8 +108,33 @@ function FloatingChatArea({ handleCloseChat }) {
     };
 
 
+    useEffect(() => {
+        ApiCall({
+            url: '/api/nickCheck',
+            method: 'POST',
+            payload : {                
+            },
+             onSuccess: (response) => {
+                if(response.success){
+                    setNicknameInput(response.result.nickname); // 입력 필드 초기화
+                    setNickname(response.result.nickname)
+                    console.log("반환 값==="+JSON.stringify(response.result.nickname))
+                }else{
+                    alert("조회 실패=="+response.message);
+                }             
+            },
+            onError: (error) => {
+                // API 호출 실패 시 처리
+                console.error("API 호출 실패:", error);
+                alert("닉네임 체크에 실패했습니다. 다시 시도해주세요.");
+            }        
+        });
+        
+    }, []);
+
+
     const sendMsg = () => {
-        const msg = { user: user , msg: inputMsg };
+        const msg = { user: nickname , msg: inputMsg };
         if (socketRef.current && isSocketOpen) {
             socketRef.current.send(JSON.stringify(msg));
             //메세지 동기화는 onmessage event에서 한다.
@@ -165,7 +183,7 @@ function FloatingChatArea({ handleCloseChat }) {
                         <div
                             key={index}
                             className={`chat-message ${
-                                message.user === user ? "my-message" : "other-message"
+                                message.user === nickname ? "my-message" : "other-message"
                             }`}
                         >
                             <span className="chat-user">{message.user}</span>
@@ -180,7 +198,7 @@ function FloatingChatArea({ handleCloseChat }) {
                                채팅 로그인 하러 가기
                             </button>
                         </div>
-                    ) : (nickName==null) ? (
+                    ) : (nickname==null) ? (
                         <div className="auth-prompt">
                         <input
                             type="text"
