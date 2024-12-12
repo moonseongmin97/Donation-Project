@@ -107,30 +107,17 @@ function FloatingChatArea({ handleCloseChat }) {
         });
     };
 
-
+/*
     useEffect(() => {
-        ApiCall({
-            url: '/api/nickCheck',
-            method: 'POST',
-            payload : {                
-            },
-             onSuccess: (response) => {
-                if(response.success){
-                    setNicknameInput(response.result.nickname); // 입력 필드 초기화
-                    setNickname(response.result.nickname)
-                    console.log("반환 값==="+JSON.stringify(response.result.nickname))
-                }else{
-                    alert("조회 실패=="+response.message);
-                }             
-            },
-            onError: (error) => {
-                // API 호출 실패 시 처리
-                console.error("API 호출 실패:", error);
-                alert("닉네임 체크에 실패했습니다. 다시 시도해주세요.");
-            }        
-        });
-        
+        nickCheck();        
     }, []);
+
+*/
+    useEffect(() => {        
+        if (user !== "비회원") {
+            nickCheck(); 
+        }
+    }, [user]);
 
 
     const sendMsg = () => {
@@ -166,6 +153,39 @@ function FloatingChatArea({ handleCloseChat }) {
         document.removeEventListener("mousemove", handleDrag);
         document.removeEventListener("mouseup", handleDragEnd);
     };
+
+    // 닉네임 가져오기기
+    const nickCheck = () => {
+        ApiCall({
+            url: '/api/nickCheck',
+            method: 'POST',
+            payload : {                
+            },
+             onSuccess: (response) => {
+                if(response.success){
+                    if(response.result!=null){
+                    setNicknameInput(response.result.nickname); // 입력 필드 초기화
+                    setNickname(response.result.nickname)
+                    console.log("반환 값==="+JSON.stringify(response.result.nickname))
+                    }else{
+                    setNicknameInput('비회원'); // 입력 필드 초기화
+                    setNickname('비회원')
+    
+                    }  
+                }else{
+                    alert("조회 실패=="+response.message);
+                }             
+            },
+            onError: (error) => {
+                // API 호출 실패 시 처리
+                console.error("API 호출 실패:", error);
+                alert("닉네임 체크에 실패했습니다. 다시 시도해주세요.");
+            }        
+        });
+    
+    };
+
+
 
     return (
         <div

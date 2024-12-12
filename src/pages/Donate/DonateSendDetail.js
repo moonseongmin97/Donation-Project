@@ -3,6 +3,8 @@ import { useSelector } from 'react-redux';
 import { Button, Container, Card } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import TossPaymentsTest from '../toss/TossPaymentsTest';
+
 
 function DonateSendDetail({ donorName, amount, message, onEdit, onConfirm }) {
     const navigate = useNavigate();
@@ -55,6 +57,8 @@ function DonateSendDetail({ donorName, amount, message, onEdit, onConfirm }) {
                     <Button variant="primary" onClick={onConfirm}>
                         기부 확정
                     </Button>
+                    <TossPaymentsTest/>
+                    
                 </div>
             </Card>
         </Container>

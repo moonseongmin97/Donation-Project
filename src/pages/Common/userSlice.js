@@ -12,6 +12,7 @@ const userSlice = createSlice({
         login(state, action) {
             state.isAuthenticated = true;
             state.user = action.payload.username;               
+            console.log("뭘까??==="+state.user);
         },
         logout(state) {
             state.isAuthenticated = false;

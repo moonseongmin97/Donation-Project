@@ -32,14 +32,12 @@ function LoginPage() {
     const handleSuccess = (data) => {
         //setId(data.result.username);
         //setId(data[0].username);
-        console.log("로그인 성공"+JSON.stringify(data));
-        console.log("세팅전---"+user);
         if(data.success){
             if(!document.referrer){
-                dispatch(login(data.result.username)); // login 액션을 디스패치합니다.                         
+                dispatch(login(data.result)); // login 액션을 디스패치합니다.                         
                 navigate('/');
             }else{
-                dispatch(login(data.result.username)); // login 액션을 디스패치합니다.
+                dispatch(login(data.result)); // login 액션을 디스패치합니다.
                 navigate('/');
                 //window.history.go(-1)
             }
