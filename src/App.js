@@ -33,6 +33,8 @@ import FloatingChatButton from "./pages/chat/FloatingChatButton";
 
 
 import TossPaymentsTest from "./pages/toss/TossPaymentsTest";
+import PhoneVerification from "./pages/Login/PhoneVerification";
+
 
 
 import Test from "./SamplePage/react-page";
@@ -92,6 +94,9 @@ function App() {
     
           <Route path="/TossPaymentsTest" element={<TossPaymentsTest />} /> 
 
+
+          <Route path="/PhoneVerification" element={<PhoneVerification />} /> 
+          
 
           {/* <TestUrl /> */}
           <Route path="/Test" element={<Test />} /> 
