@@ -35,7 +35,7 @@ import FloatingChatButton from "./pages/chat/FloatingChatButton";
 import TossPaymentsTest from "./pages/toss/TossPaymentsTest";
 import PhoneVerification from "./pages/Login/PhoneVerification";
 
-
+import KakaoRedirect from "./pages/Login/KakaoRedirect";
 
 import Test from "./SamplePage/react-page";
 import CampaignList from "./CampaignList";
@@ -97,6 +97,8 @@ function App() {
 
           <Route path="/PhoneVerification" element={<PhoneVerification />} /> 
           
+          {/* 카카오 리다이렉트 페이지 */}
+          <Route path="/KakaoRedirect" element={<KakaoRedirect />} />  
 
           {/* <TestUrl /> */}
           <Route path="/Test" element={<Test />} /> 
