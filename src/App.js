@@ -36,6 +36,7 @@ import TossPaymentsTest from "./pages/toss/TossPaymentsTest";
 import PhoneVerification from "./pages/Login/PhoneVerification";
 
 import KakaoRedirect from "./pages/Login/KakaoRedirect";
+import NaverRedirect from "./pages/Naver/NaverCallback";
 
 import Test from "./SamplePage/react-page";
 import CampaignList from "./CampaignList";
@@ -99,6 +100,9 @@ function App() {
           
           {/* 카카오 리다이렉트 페이지 */}
           <Route path="/KakaoRedirect" element={<KakaoRedirect />} />  
+
+          {/* 네이버 리다이렉트 페이지 */}
+          <Route path="/NaverRedirect" element={<NaverRedirect />} />
 
           {/* <TestUrl /> */}
           <Route path="/Test" element={<Test />} /> 

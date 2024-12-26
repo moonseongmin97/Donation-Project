@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import ApiCall from '../Common/ApiCall';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Kakao from './KakaoLogin';
+import Naver from '../Naver/NaverLoginButton';
 
 function LoginPage() {
   const [id, setId] = useState("");
@@ -93,17 +94,25 @@ function LoginPage() {
                     <Button
                       type="submit"
                       variant="primary"
-                      className="w-100 mb-2"
+                      className="w-100 mb-3"
                       disabled={loading}
                     >
                       {loading ? '로그인 중...' : '로그인'}
                     </Button>
-                    <Button variant="outline-secondary" className="w-100" onClick={goToSignup}>
+                    <Button variant="outline-secondary" className="w-100 mb-4" onClick={goToSignup}>
                       회원가입
                     </Button>
                   </Form>
-                  {/* 카카오 로그인 버튼 */}
-                    <Kakao/>
+                  {/* 소셜 로그인 버튼 그룹 */}
+                  <div className="text-center">
+                    <div className="d-flex justify-content-between">
+                      <Kakao />
+                      <Naver
+                        clientId="AMRLiBWGa730vfQdSPsQ" // 네이버 개발자 센터에서 발급받은 클라이언트 ID
+                        callbackUrl="http://localhost:3000/NaverRedirect" // 리다이렉트 URL
+                      />
+                    </div>
+                  </div>
                 </Col>
               </Row>
             </div>
